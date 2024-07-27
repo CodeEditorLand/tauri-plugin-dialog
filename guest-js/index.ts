@@ -5,15 +5,15 @@
 import { invoke } from "@tauri-apps/api/core";
 
 interface FileResponse {
-  base64Data?: string;
-  duration?: number;
-  height?: number;
-  width?: number;
-  mimeType?: string;
-  modifiedAt?: number;
-  name?: string;
-  path: string;
-  size: number;
+	base64Data?: string;
+	duration?: number;
+	height?: number;
+	width?: number;
+	mimeType?: string;
+	modifiedAt?: number;
+	name?: string;
+	path: string;
+	size: number;
 }
 
 /**
@@ -22,16 +22,16 @@ interface FileResponse {
  * @since 2.0.0
  */
 interface DialogFilter {
-  /** Filter name. */
-  name: string;
-  /**
-   * Extensions to filter, without a `.` prefix.
-   * @example
-   * ```typescript
-   * extensions: ['svg', 'png']
-   * ```
-   */
-  extensions: string[];
+	/** Filter name. */
+	name: string;
+	/**
+	 * Extensions to filter, without a `.` prefix.
+	 * @example
+	 * ```typescript
+	 * extensions: ['svg', 'png']
+	 * ```
+	 */
+	extensions: string[];
 }
 
 /**
@@ -40,23 +40,23 @@ interface DialogFilter {
  * @since 2.0.0
  */
 interface OpenDialogOptions {
-  /** The title of the dialog window. */
-  title?: string;
-  /** The filters of the dialog. */
-  filters?: DialogFilter[];
-  /** Initial directory or file path. */
-  defaultPath?: string;
-  /** Whether the dialog allows multiple selection or not. */
-  multiple?: boolean;
-  /** Whether the dialog is a directory selection or not. */
-  directory?: boolean;
-  /**
-   * If `directory` is true, indicates that it will be read recursively later.
-   * Defines whether subdirectories will be allowed on the scope or not.
-   */
-  recursive?: boolean;
-  /** Whether to allow creating directories in the dialog. Enabled by default. **macOS Only** */
-  canCreateDirectories?: boolean;
+	/** The title of the dialog window. */
+	title?: string;
+	/** The filters of the dialog. */
+	filters?: DialogFilter[];
+	/** Initial directory or file path. */
+	defaultPath?: string;
+	/** Whether the dialog allows multiple selection or not. */
+	multiple?: boolean;
+	/** Whether the dialog is a directory selection or not. */
+	directory?: boolean;
+	/**
+	 * If `directory` is true, indicates that it will be read recursively later.
+	 * Defines whether subdirectories will be allowed on the scope or not.
+	 */
+	recursive?: boolean;
+	/** Whether to allow creating directories in the dialog. Enabled by default. **macOS Only** */
+	canCreateDirectories?: boolean;
 }
 
 /**
@@ -65,50 +65,50 @@ interface OpenDialogOptions {
  * @since 2.0.0
  */
 interface SaveDialogOptions {
-  /** The title of the dialog window. */
-  title?: string;
-  /** The filters of the dialog. */
-  filters?: DialogFilter[];
-  /**
-   * Initial directory or file path.
-   * If it's a directory path, the dialog interface will change to that folder.
-   * If it's not an existing directory, the file name will be set to the dialog's file name input and the dialog will be set to the parent folder.
-   */
-  defaultPath?: string;
-  /** Whether to allow creating directories in the dialog. Enabled by default. **macOS Only** */
-  canCreateDirectories?: boolean;
+	/** The title of the dialog window. */
+	title?: string;
+	/** The filters of the dialog. */
+	filters?: DialogFilter[];
+	/**
+	 * Initial directory or file path.
+	 * If it's a directory path, the dialog interface will change to that folder.
+	 * If it's not an existing directory, the file name will be set to the dialog's file name input and the dialog will be set to the parent folder.
+	 */
+	defaultPath?: string;
+	/** Whether to allow creating directories in the dialog. Enabled by default. **macOS Only** */
+	canCreateDirectories?: boolean;
 }
 
 /**
  * @since 2.0.0
  */
 interface MessageDialogOptions {
-  /** The title of the dialog. Defaults to the app name. */
-  title?: string;
-  /** The kind of the dialog. Defaults to `info`. */
-  kind?: "info" | "warning" | "error";
-  /** The label of the confirm button. */
-  okLabel?: string;
+	/** The title of the dialog. Defaults to the app name. */
+	title?: string;
+	/** The kind of the dialog. Defaults to `info`. */
+	kind?: "info" | "warning" | "error";
+	/** The label of the confirm button. */
+	okLabel?: string;
 }
 
 interface ConfirmDialogOptions {
-  /** The title of the dialog. Defaults to the app name. */
-  title?: string;
-  /** The kind of the dialog. Defaults to `info`. */
-  kind?: "info" | "warning" | "error";
-  /** The label of the confirm button. */
-  okLabel?: string;
-  /** The label of the cancel button. */
-  cancelLabel?: string;
+	/** The title of the dialog. Defaults to the app name. */
+	title?: string;
+	/** The kind of the dialog. Defaults to `info`. */
+	kind?: "info" | "warning" | "error";
+	/** The label of the confirm button. */
+	okLabel?: string;
+	/** The label of the cancel button. */
+	cancelLabel?: string;
 }
 
 type OpenDialogReturn<T extends OpenDialogOptions> = T["directory"] extends true
-  ? T["multiple"] extends true
-    ? string[] | null
-    : string | null
-  : T["multiple"] extends true
-    ? FileResponse[] | null
-    : FileResponse | null;
+	? T["multiple"] extends true
+		? string[] | null
+		: string | null
+	: T["multiple"] extends true
+		? FileResponse[] | null
+		: FileResponse | null;
 
 /**
  * Open a file/directory selection dialog.
@@ -163,13 +163,13 @@ type OpenDialogReturn<T extends OpenDialogOptions> = T["directory"] extends true
  * @since 2.0.0
  */
 async function open<T extends OpenDialogOptions>(
-  options: T = {} as T,
+	options: T = {} as T,
 ): Promise<OpenDialogReturn<T>> {
-  if (typeof options === "object") {
-    Object.freeze(options);
-  }
+	if (typeof options === "object") {
+		Object.freeze(options);
+	}
 
-  return await invoke("plugin:dialog|open", { options });
+	return await invoke("plugin:dialog|open", { options });
 }
 
 /**
@@ -197,11 +197,11 @@ async function open<T extends OpenDialogOptions>(
  * @since 2.0.0
  */
 async function save(options: SaveDialogOptions = {}): Promise<string | null> {
-  if (typeof options === "object") {
-    Object.freeze(options);
-  }
+	if (typeof options === "object") {
+		Object.freeze(options);
+	}
 
-  return await invoke("plugin:dialog|save", { options });
+	return await invoke("plugin:dialog|save", { options });
 }
 
 /**
@@ -222,16 +222,16 @@ async function save(options: SaveDialogOptions = {}): Promise<string | null> {
  *
  */
 async function message(
-  message: string,
-  options?: string | MessageDialogOptions,
+	message: string,
+	options?: string | MessageDialogOptions,
 ): Promise<void> {
-  const opts = typeof options === "string" ? { title: options } : options;
-  await invoke("plugin:dialog|message", {
-    message: message.toString(),
-    title: opts?.title?.toString(),
-    kind: opts?.kind,
-    okButtonLabel: opts?.okLabel?.toString(),
-  });
+	const opts = typeof options === "string" ? { title: options } : options;
+	await invoke("plugin:dialog|message", {
+		message: message.toString(),
+		title: opts?.title?.toString(),
+		kind: opts?.kind,
+		okButtonLabel: opts?.okLabel?.toString(),
+	});
 }
 
 /**
@@ -251,17 +251,17 @@ async function message(
  * @since 2.0.0
  */
 async function ask(
-  message: string,
-  options?: string | ConfirmDialogOptions,
+	message: string,
+	options?: string | ConfirmDialogOptions,
 ): Promise<boolean> {
-  const opts = typeof options === "string" ? { title: options } : options;
-  return await invoke("plugin:dialog|ask", {
-    message: message.toString(),
-    title: opts?.title?.toString(),
-    kind: opts?.kind,
-    okButtonLabel: opts?.okLabel?.toString() ?? "Yes",
-    cancelButtonLabel: opts?.cancelLabel?.toString() ?? "No",
-  });
+	const opts = typeof options === "string" ? { title: options } : options;
+	return await invoke("plugin:dialog|ask", {
+		message: message.toString(),
+		title: opts?.title?.toString(),
+		kind: opts?.kind,
+		okButtonLabel: opts?.okLabel?.toString() ?? "Yes",
+		cancelButtonLabel: opts?.cancelLabel?.toString() ?? "No",
+	});
 }
 
 /**
@@ -281,27 +281,27 @@ async function ask(
  * @since 2.0.0
  */
 async function confirm(
-  message: string,
-  options?: string | ConfirmDialogOptions,
+	message: string,
+	options?: string | ConfirmDialogOptions,
 ): Promise<boolean> {
-  const opts = typeof options === "string" ? { title: options } : options;
-  return await invoke("plugin:dialog|confirm", {
-    message: message.toString(),
-    title: opts?.title?.toString(),
-    kind: opts?.kind,
-    okButtonLabel: opts?.okLabel?.toString() ?? "Ok",
-    cancelButtonLabel: opts?.cancelLabel?.toString() ?? "Cancel",
-  });
+	const opts = typeof options === "string" ? { title: options } : options;
+	return await invoke("plugin:dialog|confirm", {
+		message: message.toString(),
+		title: opts?.title?.toString(),
+		kind: opts?.kind,
+		okButtonLabel: opts?.okLabel?.toString() ?? "Ok",
+		cancelButtonLabel: opts?.cancelLabel?.toString() ?? "Cancel",
+	});
 }
 
 export type {
-  DialogFilter,
-  FileResponse,
-  OpenDialogOptions,
-  OpenDialogReturn,
-  SaveDialogOptions,
-  MessageDialogOptions,
-  ConfirmDialogOptions,
+	DialogFilter,
+	FileResponse,
+	OpenDialogOptions,
+	OpenDialogReturn,
+	SaveDialogOptions,
+	MessageDialogOptions,
+	ConfirmDialogOptions,
 };
 
 export { open, save, message, ask, confirm };

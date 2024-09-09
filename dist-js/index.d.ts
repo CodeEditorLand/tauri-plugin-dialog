@@ -4,16 +4,16 @@
  * @since 2.0.0
  */
 interface DialogFilter {
-	/** Filter name. */
-	name: string;
-	/**
-	 * Extensions to filter, without a `.` prefix.
-	 * @example
-	 * ```typescript
-	 * extensions: ['svg', 'png']
-	 * ```
-	 */
-	extensions: string[];
+    /** Filter name. */
+    name: string;
+    /**
+     * Extensions to filter, without a `.` prefix.
+     * @example
+     * ```typescript
+     * extensions: ['svg', 'png']
+     * ```
+     */
+    extensions: string[];
 }
 /**
  * Options for the open dialog.
@@ -142,9 +142,7 @@ type OpenDialogReturn<T extends OpenDialogOptions> = T['directory'] extends true
  *
  * @since 2.0.0
  */
-declare function open<T extends OpenDialogOptions>(
-	options?: T,
-): Promise<OpenDialogReturn<T>>;
+declare function open<T extends OpenDialogOptions>(options?: T): Promise<OpenDialogReturn<T>>;
 /**
  * Open a file/directory save dialog.
  *
@@ -187,10 +185,7 @@ declare function save(options?: SaveDialogOptions): Promise<string | null>;
  * @since 2.0.0
  *
  */
-declare function message(
-	message: string,
-	options?: string | MessageDialogOptions,
-): Promise<void>;
+declare function message(message: string, options?: string | MessageDialogOptions): Promise<void>;
 /**
  * Shows a question dialog with `Yes` and `No` buttons.
  * @example
@@ -207,10 +202,7 @@ declare function message(
  *
  * @since 2.0.0
  */
-declare function ask(
-	message: string,
-	options?: string | ConfirmDialogOptions,
-): Promise<boolean>;
+declare function ask(message: string, options?: string | ConfirmDialogOptions): Promise<boolean>;
 /**
  * Shows a question dialog with `Ok` and `Cancel` buttons.
  * @example

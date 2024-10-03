@@ -8,10 +8,7 @@ use serde::{Deserialize, Serialize};
 use tauri::{command, Manager, Runtime, State, Window};
 use tauri_plugin_fs::FsExt;
 
-use crate::{
-    Dialog, FileDialogBuilder, FilePath, MessageDialogButtons, MessageDialogKind, Result, CANCEL,
-    OK,
-};
+use crate::{Dialog, FileDialogBuilder, FilePath, MessageDialogKind, Result};
 
 #[derive(Serialize)]
 #[serde(untagged)]
@@ -247,11 +244,10 @@ fn message_dialog<R: Runtime>(
     title: Option<String>,
     message: String,
     kind: Option<MessageDialogKind>,
-    buttons: MessageDialogButtons,
+    ok_button_label: Option<String>,
+    cancel_button_label: Option<String>,
 ) -> bool {
     let mut builder = dialog.message(message);
-
-    builder = builder.buttons(buttons);
 
     if let Some(title) = title {
         builder = builder.title(title);
@@ -264,6 +260,14 @@ fn message_dialog<R: Runtime>(
 
     if let Some(kind) = kind {
         builder = builder.kind(kind);
+    }
+
+    if let Some(ok) = ok_button_label {
+        builder = builder.ok_button_label(ok);
+    }
+
+    if let Some(cancel) = cancel_button_label {
+        builder = builder.cancel_button_label(cancel);
     }
 
     builder.blocking_show()
@@ -284,11 +288,8 @@ pub(crate) async fn message<R: Runtime>(
         title,
         message,
         kind,
-        if let Some(ok_button_label) = ok_button_label {
-            MessageDialogButtons::OkCustom(ok_button_label)
-        } else {
-            MessageDialogButtons::Ok
-        },
+        ok_button_label,
+        None,
     ))
 }
 
@@ -308,7 +309,8 @@ pub(crate) async fn ask<R: Runtime>(
         title,
         message,
         kind,
-        get_ok_cancel_type(ok_button_label, cancel_button_label),
+        Some(ok_button_label.unwrap_or_else(|| "Yes".into())),
+        Some(cancel_button_label.unwrap_or_else(|| "No".into())),
     ))
 }
 
@@ -328,22 +330,7 @@ pub(crate) async fn confirm<R: Runtime>(
         title,
         message,
         kind,
-        get_ok_cancel_type(ok_button_label, cancel_button_label),
+        Some(ok_button_label.unwrap_or_else(|| "Ok".into())),
+        Some(cancel_button_label.unwrap_or_else(|| "Cancel".into())),
     ))
-}
-
-fn get_ok_cancel_type(
-    ok_button_label: Option<String>,
-    cancel_button_label: Option<String>,
-) -> MessageDialogButtons {
-    if let Some(ok_button_label) = ok_button_label {
-        MessageDialogButtons::OkCancelCustom(
-            ok_button_label,
-            cancel_button_label.unwrap_or(CANCEL.to_string()),
-        )
-    } else if let Some(cancel_button_label) = cancel_button_label {
-        MessageDialogButtons::OkCancelCustom(OK.to_string(), cancel_button_label)
-    } else {
-        MessageDialogButtons::OkCancel
-    }
 }

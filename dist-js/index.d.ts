@@ -4,16 +4,16 @@
  * @since 2.0.0
  */
 interface DialogFilter {
-    /** Filter name. */
-    name: string;
-    /**
-     * Extensions to filter, without a `.` prefix.
-     * @example
-     * ```typescript
-     * extensions: ['svg', 'png']
-     * ```
-     */
-    extensions: string[];
+	/** Filter name. */
+	name: string;
+	/**
+	 * Extensions to filter, without a `.` prefix.
+	 * @example
+	 * ```typescript
+	 * extensions: ['svg', 'png']
+	 * ```
+	 */
+	extensions: string[];
 }
 /**
  * Options for the open dialog.
@@ -21,30 +21,30 @@ interface DialogFilter {
  * @since 2.0.0
  */
 interface OpenDialogOptions {
-    /** The title of the dialog window (desktop only). */
-    title?: string;
-    /** The filters of the dialog. */
-    filters?: DialogFilter[];
-    /**
-     * Initial directory or file path.
-     * If it's a directory path, the dialog interface will change to that folder.
-     * If it's not an existing directory, the file name will be set to the dialog's file name input and the dialog will be set to the parent folder.
-     *
-     * On mobile the file name is always used on the dialog's file name input.
-     * If not provided, Android uses `(invalid).txt` as default file name.
-     */
-    defaultPath?: string;
-    /** Whether the dialog allows multiple selection or not. */
-    multiple?: boolean;
-    /** Whether the dialog is a directory selection or not. */
-    directory?: boolean;
-    /**
-     * If `directory` is true, indicates that it will be read recursively later.
-     * Defines whether subdirectories will be allowed on the scope or not.
-     */
-    recursive?: boolean;
-    /** Whether to allow creating directories in the dialog. Enabled by default. **macOS Only** */
-    canCreateDirectories?: boolean;
+	/** The title of the dialog window (desktop only). */
+	title?: string;
+	/** The filters of the dialog. */
+	filters?: DialogFilter[];
+	/**
+	 * Initial directory or file path.
+	 * If it's a directory path, the dialog interface will change to that folder.
+	 * If it's not an existing directory, the file name will be set to the dialog's file name input and the dialog will be set to the parent folder.
+	 *
+	 * On mobile the file name is always used on the dialog's file name input.
+	 * If not provided, Android uses `(invalid).txt` as default file name.
+	 */
+	defaultPath?: string;
+	/** Whether the dialog allows multiple selection or not. */
+	multiple?: boolean;
+	/** Whether the dialog is a directory selection or not. */
+	directory?: boolean;
+	/**
+	 * If `directory` is true, indicates that it will be read recursively later.
+	 * Defines whether subdirectories will be allowed on the scope or not.
+	 */
+	recursive?: boolean;
+	/** Whether to allow creating directories in the dialog. Enabled by default. **macOS Only** */
+	canCreateDirectories?: boolean;
 }
 /**
  * Options for the save dialog.
@@ -52,44 +52,50 @@ interface OpenDialogOptions {
  * @since 2.0.0
  */
 interface SaveDialogOptions {
-    /** The title of the dialog window (desktop only). */
-    title?: string;
-    /** The filters of the dialog. */
-    filters?: DialogFilter[];
-    /**
-     * Initial directory or file path.
-     * If it's a directory path, the dialog interface will change to that folder.
-     * If it's not an existing directory, the file name will be set to the dialog's file name input and the dialog will be set to the parent folder.
-     *
-     * On mobile the file name is always used on the dialog's file name input.
-     * If not provided, Android uses `(invalid).txt` as default file name.
-     */
-    defaultPath?: string;
-    /** Whether to allow creating directories in the dialog. Enabled by default. **macOS Only** */
-    canCreateDirectories?: boolean;
+	/** The title of the dialog window (desktop only). */
+	title?: string;
+	/** The filters of the dialog. */
+	filters?: DialogFilter[];
+	/**
+	 * Initial directory or file path.
+	 * If it's a directory path, the dialog interface will change to that folder.
+	 * If it's not an existing directory, the file name will be set to the dialog's file name input and the dialog will be set to the parent folder.
+	 *
+	 * On mobile the file name is always used on the dialog's file name input.
+	 * If not provided, Android uses `(invalid).txt` as default file name.
+	 */
+	defaultPath?: string;
+	/** Whether to allow creating directories in the dialog. Enabled by default. **macOS Only** */
+	canCreateDirectories?: boolean;
 }
 /**
  * @since 2.0.0
  */
 interface MessageDialogOptions {
-    /** The title of the dialog. Defaults to the app name. */
-    title?: string;
-    /** The kind of the dialog. Defaults to `info`. */
-    kind?: 'info' | 'warning' | 'error';
-    /** The label of the confirm button. */
-    okLabel?: string;
+	/** The title of the dialog. Defaults to the app name. */
+	title?: string;
+	/** The kind of the dialog. Defaults to `info`. */
+	kind?: "info" | "warning" | "error";
+	/** The label of the confirm button. */
+	okLabel?: string;
 }
 interface ConfirmDialogOptions {
-    /** The title of the dialog. Defaults to the app name. */
-    title?: string;
-    /** The kind of the dialog. Defaults to `info`. */
-    kind?: 'info' | 'warning' | 'error';
-    /** The label of the confirm button. */
-    okLabel?: string;
-    /** The label of the cancel button. */
-    cancelLabel?: string;
+	/** The title of the dialog. Defaults to the app name. */
+	title?: string;
+	/** The kind of the dialog. Defaults to `info`. */
+	kind?: "info" | "warning" | "error";
+	/** The label of the confirm button. */
+	okLabel?: string;
+	/** The label of the cancel button. */
+	cancelLabel?: string;
 }
-type OpenDialogReturn<T extends OpenDialogOptions> = T['directory'] extends true ? T['multiple'] extends true ? string[] | null : string | null : T['multiple'] extends true ? string[] | null : string | null;
+type OpenDialogReturn<T extends OpenDialogOptions> = T["directory"] extends true
+	? T["multiple"] extends true
+		? string[] | null
+		: string | null
+	: T["multiple"] extends true
+		? string[] | null
+		: string | null;
 /**
  * Open a file/directory selection dialog.
  *
@@ -142,7 +148,9 @@ type OpenDialogReturn<T extends OpenDialogOptions> = T['directory'] extends true
  *
  * @since 2.0.0
  */
-declare function open<T extends OpenDialogOptions>(options?: T): Promise<OpenDialogReturn<T>>;
+declare function open<T extends OpenDialogOptions>(
+	options?: T,
+): Promise<OpenDialogReturn<T>>;
 /**
  * Open a file/directory save dialog.
  *
@@ -185,7 +193,10 @@ declare function save(options?: SaveDialogOptions): Promise<string | null>;
  * @since 2.0.0
  *
  */
-declare function message(message: string, options?: string | MessageDialogOptions): Promise<void>;
+declare function message(
+	message: string,
+	options?: string | MessageDialogOptions,
+): Promise<void>;
 /**
  * Shows a question dialog with `Yes` and `No` buttons.
  * @example
@@ -202,7 +213,10 @@ declare function message(message: string, options?: string | MessageDialogOption
  *
  * @since 2.0.0
  */
-declare function ask(message: string, options?: string | ConfirmDialogOptions): Promise<boolean>;
+declare function ask(
+	message: string,
+	options?: string | ConfirmDialogOptions,
+): Promise<boolean>;
 /**
  * Shows a question dialog with `Ok` and `Cancel` buttons.
  * @example
@@ -219,6 +233,16 @@ declare function ask(message: string, options?: string | ConfirmDialogOptions): 
  *
  * @since 2.0.0
  */
-declare function confirm(message: string, options?: string | ConfirmDialogOptions): Promise<boolean>;
-export type { DialogFilter, OpenDialogOptions, OpenDialogReturn, SaveDialogOptions, MessageDialogOptions, ConfirmDialogOptions };
+declare function confirm(
+	message: string,
+	options?: string | ConfirmDialogOptions,
+): Promise<boolean>;
+export type {
+	DialogFilter,
+	OpenDialogOptions,
+	OpenDialogReturn,
+	SaveDialogOptions,
+	MessageDialogOptions,
+	ConfirmDialogOptions,
+};
 export { open, save, message, ask, confirm };

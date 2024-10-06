@@ -88,8 +88,7 @@ fn set_default_path<R:Runtime>(
 	default_path:PathBuf,
 ) -> FileDialogBuilder<R> {
 	if let Some(file_name) = default_path.file_name() {
-		dialog_builder =
-			dialog_builder.set_file_name(file_name.to_string_lossy());
+		dialog_builder = dialog_builder.set_file_name(file_name.to_string_lossy());
 	}
 	dialog_builder
 }
@@ -102,14 +101,11 @@ fn set_default_path<R:Runtime>(
 	// we need to adjust the separator on Windows: https://github.com/tauri-apps/tauri/issues/8074
 	let default_path:PathBuf = default_path.components().collect();
 	if default_path.is_file() || !default_path.exists() {
-		if let (Some(parent), Some(file_name)) =
-			(default_path.parent(), default_path.file_name())
-		{
+		if let (Some(parent), Some(file_name)) = (default_path.parent(), default_path.file_name()) {
 			if parent.components().count() > 0 {
 				dialog_builder = dialog_builder.set_directory(parent);
 			}
-			dialog_builder =
-				dialog_builder.set_file_name(file_name.to_string_lossy());
+			dialog_builder = dialog_builder.set_file_name(file_name.to_string_lossy());
 		} else {
 			dialog_builder = dialog_builder.set_directory(default_path);
 		}
@@ -140,8 +136,7 @@ pub(crate) async fn open<R:Runtime>(
 		dialog_builder = dialog_builder.set_can_create_directories(can);
 	}
 	for filter in options.filters {
-		let extensions:Vec<&str> =
-			filter.extensions.iter().map(|s| &**s).collect();
+		let extensions:Vec<&str> = filter.extensions.iter().map(|s| &**s).collect();
 		dialog_builder = dialog_builder.add_filter(filter.name, &extensions);
 	}
 
@@ -158,14 +153,13 @@ pub(crate) async fn open<R:Runtime>(
 							if let Some(s) = window.try_fs_scope() {
 								s.allow_directory(&path, options.recursive);
 							}
-							tauri_scope
-								.allow_directory(&path, options.directory)?;
+							tauri_scope.allow_directory(&path, options.directory)?;
 						}
 					}
 				}
-				OpenResponse::Folders(folders.map(|folders| {
-					folders.into_iter().map(|p| p.simplified()).collect()
-				}))
+				OpenResponse::Folders(
+					folders.map(|folders| folders.into_iter().map(|p| p.simplified()).collect()),
+				)
 			} else {
 				let folder = dialog_builder.blocking_pick_folder();
 				if let Some(folder) = &folder {
@@ -173,8 +167,7 @@ pub(crate) async fn open<R:Runtime>(
 						if let Some(s) = window.try_fs_scope() {
 							s.allow_directory(&path, options.recursive);
 						}
-						tauri_scope
-							.allow_directory(&path, options.directory)?;
+						tauri_scope.allow_directory(&path, options.directory)?;
 					}
 				}
 				OpenResponse::Folder(folder.map(|p| p.simplified()))
@@ -197,11 +190,7 @@ pub(crate) async fn open<R:Runtime>(
 				}
 			}
 		}
-		OpenResponse::Files(
-			files.map(|files| {
-				files.into_iter().map(|f| f.simplified()).collect()
-			}),
-		)
+		OpenResponse::Files(files.map(|files| files.into_iter().map(|f| f.simplified()).collect()))
 	} else {
 		let tauri_scope = window.state::<tauri::scope::Scopes>();
 		let file = dialog_builder.blocking_pick_file();
@@ -241,8 +230,7 @@ pub(crate) async fn save<R:Runtime>(
 		dialog_builder = dialog_builder.set_can_create_directories(can);
 	}
 	for filter in options.filters {
-		let extensions:Vec<&str> =
-			filter.extensions.iter().map(|s| &**s).collect();
+		let extensions:Vec<&str> = filter.extensions.iter().map(|s| &**s).collect();
 		dialog_builder = dialog_builder.add_filter(filter.name, &extensions);
 	}
 
@@ -362,10 +350,7 @@ fn get_ok_cancel_type(
 			cancel_button_label.unwrap_or(CANCEL.to_string()),
 		)
 	} else if let Some(cancel_button_label) = cancel_button_label {
-		MessageDialogButtons::OkCancelCustom(
-			OK.to_string(),
-			cancel_button_label,
-		)
+		MessageDialogButtons::OkCancelCustom(OK.to_string(), cancel_button_label)
 	} else {
 		MessageDialogButtons::OkCancel
 	}

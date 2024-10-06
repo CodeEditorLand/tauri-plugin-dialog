@@ -56,10 +56,10 @@ pub fn pick_file<R:Runtime, F:FnOnce(Option<FilePath>) + Send + 'static>(
 	f:F,
 ) {
 	std::thread::spawn(move || {
-		let res = dialog.dialog.0.run_mobile_plugin::<FilePickerResponse>(
-			"showFilePicker",
-			dialog.payload(false),
-		);
+		let res = dialog
+			.dialog
+			.0
+			.run_mobile_plugin::<FilePickerResponse>("showFilePicker", dialog.payload(false));
 		if let Ok(response) = res {
 			f(Some(response.files.into_iter().next().unwrap()))
 		} else {
@@ -68,18 +68,15 @@ pub fn pick_file<R:Runtime, F:FnOnce(Option<FilePath>) + Send + 'static>(
 	});
 }
 
-pub fn pick_files<
-	R:Runtime,
-	F:FnOnce(Option<Vec<FilePath>>) + Send + 'static,
->(
+pub fn pick_files<R:Runtime, F:FnOnce(Option<Vec<FilePath>>) + Send + 'static>(
 	dialog:FileDialogBuilder<R>,
 	f:F,
 ) {
 	std::thread::spawn(move || {
-		let res = dialog.dialog.0.run_mobile_plugin::<FilePickerResponse>(
-			"showFilePicker",
-			dialog.payload(true),
-		);
+		let res = dialog
+			.dialog
+			.0
+			.run_mobile_plugin::<FilePickerResponse>("showFilePicker", dialog.payload(true));
 		if let Ok(response) = res { f(Some(response.files)) } else { f(None) }
 	});
 }
@@ -89,10 +86,10 @@ pub fn save_file<R:Runtime, F:FnOnce(Option<FilePath>) + Send + 'static>(
 	f:F,
 ) {
 	std::thread::spawn(move || {
-		let res = dialog.dialog.0.run_mobile_plugin::<SaveFileResponse>(
-			"saveFileDialog",
-			dialog.payload(false),
-		);
+		let res = dialog
+			.dialog
+			.0
+			.run_mobile_plugin::<SaveFileResponse>("saveFileDialog", dialog.payload(false));
 		if let Ok(response) = res { f(Some(response.file)) } else { f(None) }
 	});
 }
@@ -110,11 +107,10 @@ pub fn show_message_dialog<R:Runtime, F:FnOnce(bool) + Send + 'static>(
 	f:F,
 ) {
 	std::thread::spawn(move || {
-		let res =
-			dialog.dialog.0.run_mobile_plugin::<ShowMessageDialogResponse>(
-				"showMessageDialog",
-				dialog.payload(),
-			);
+		let res = dialog
+			.dialog
+			.0
+			.run_mobile_plugin::<ShowMessageDialogResponse>("showMessageDialog", dialog.payload());
 		f(res.map(|r| r.value).unwrap_or_default())
 	});
 }

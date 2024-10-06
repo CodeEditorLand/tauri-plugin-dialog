@@ -142,10 +142,7 @@ impl<R:Runtime> Dialog<R> {
 	/// 	Ok(())
 	/// });
 	/// ```
-	pub fn message(
-		&self,
-		message:impl Into<String>,
-	) -> MessageDialogBuilder<R> {
+	pub fn message(&self, message:impl Into<String>) -> MessageDialogBuilder<R> {
 		MessageDialogBuilder::new(
 			self.clone(),
 			self.app_handle().package_info().name.clone(),
@@ -155,9 +152,7 @@ impl<R:Runtime> Dialog<R> {
 
 	/// Creates a new builder for dialogs that lets the user select file(s) or
 	/// folder(s).
-	pub fn file(&self) -> FileDialogBuilder<R> {
-		FileDialogBuilder::new(self.clone())
-	}
+	pub fn file(&self) -> FileDialogBuilder<R> { FileDialogBuilder::new(self.clone()) }
 }
 
 /// Initializes the plugin.
@@ -168,8 +163,7 @@ pub fn init<R:Runtime>() -> TauriPlugin<R> {
 	// Dialogs are implemented natively on Android
 	#[cfg(not(target_os = "android"))]
 	{
-		builder =
-			builder.js_init_script(include_str!("init-iife.js").to_string());
+		builder = builder.js_init_script(include_str!("init-iife.js").to_string());
 	}
 
 	builder
@@ -220,11 +214,7 @@ unsafe impl<R:Runtime> Send for MessageDialogBuilder<R> {}
 
 impl<R:Runtime> MessageDialogBuilder<R> {
 	/// Creates a new message dialog builder.
-	pub fn new(
-		dialog:Dialog<R>,
-		title:impl Into<String>,
-		message:impl Into<String>,
-	) -> Self {
+	pub fn new(dialog:Dialog<R>, title:impl Into<String>, message:impl Into<String>) -> Self {
 		Self {
 			dialog,
 			title:title.into(),
@@ -241,9 +231,7 @@ impl<R:Runtime> MessageDialogBuilder<R> {
 		let (ok_button_label, cancel_button_label) = match &self.buttons {
 			MessageDialogButtons::Ok => (Some(OK), None),
 			MessageDialogButtons::OkCancel => (Some(OK), Some(CANCEL)),
-			MessageDialogButtons::OkCustom(ok) => {
-				(Some(ok.as_str()), Some(CANCEL))
-			},
+			MessageDialogButtons::OkCustom(ok) => (Some(ok.as_str()), Some(CANCEL)),
 			MessageDialogButtons::OkCancelCustom(ok, cancel) => {
 				(Some(ok.as_str()), Some(cancel.as_str()))
 			},
@@ -265,10 +253,7 @@ impl<R:Runtime> MessageDialogBuilder<R> {
 
 	/// Set parent windows explicitly (optional)
 	#[cfg(desktop)]
-	pub fn parent<
-		W:raw_window_handle::HasWindowHandle
-			+ raw_window_handle::HasDisplayHandle,
-	>(
+	pub fn parent<W:raw_window_handle::HasWindowHandle + raw_window_handle::HasDisplayHandle>(
 		mut self,
 		parent:&W,
 	) -> Self {
@@ -299,9 +284,7 @@ impl<R:Runtime> MessageDialogBuilder<R> {
 	}
 
 	/// Shows a message dialog
-	pub fn show<F:FnOnce(bool) + Send + 'static>(self, f:F) {
-		show_message_dialog(self, f)
-	}
+	pub fn show<F:FnOnce(bool) + Send + 'static>(self, f:F) { show_message_dialog(self, f) }
 
 	/// Shows a message dialog.
 	/// This is a blocking operation,
@@ -360,21 +343,13 @@ impl<R:Runtime> FileDialogBuilder<R> {
 
 	#[cfg(mobile)]
 	pub(crate) fn payload(&self, multiple:bool) -> FileDialogPayload<'_> {
-		FileDialogPayload {
-			file_name:&self.file_name,
-			filters:&self.filters,
-			multiple,
-		}
+		FileDialogPayload { file_name:&self.file_name, filters:&self.filters, multiple }
 	}
 
 	/// Add file extension filter. Takes in the name of the filter, and list of
 	/// extensions
 	#[must_use]
-	pub fn add_filter(
-		mut self,
-		name:impl Into<String>,
-		extensions:&[&str],
-	) -> Self {
+	pub fn add_filter(mut self, name:impl Into<String>, extensions:&[&str]) -> Self {
 		self.filters.push(Filter {
 			name:name.into(),
 			extensions:extensions.iter().map(|e| e.to_string()).collect(),
@@ -400,8 +375,7 @@ impl<R:Runtime> FileDialogBuilder<R> {
 	#[cfg(desktop)]
 	#[must_use]
 	pub fn set_parent<
-		W:raw_window_handle::HasWindowHandle
-			+ raw_window_handle::HasDisplayHandle,
+		W:raw_window_handle::HasWindowHandle + raw_window_handle::HasDisplayHandle,
 	>(
 		mut self,
 		parent:&W,
@@ -451,9 +425,7 @@ impl<R:Runtime> FileDialogBuilder<R> {
 	/// 	Ok(())
 	/// });
 	/// ```
-	pub fn pick_file<F:FnOnce(Option<FilePath>) + Send + 'static>(self, f:F) {
-		pick_file(self, f)
-	}
+	pub fn pick_file<F:FnOnce(Option<FilePath>) + Send + 'static>(self, f:F) { pick_file(self, f) }
 
 	/// Shows the dialog to select multiple files.
 	/// This is not a blocking operation,
@@ -495,10 +467,7 @@ impl<R:Runtime> FileDialogBuilder<R> {
 	/// 	Ok(())
 	/// });
 	/// ```
-	pub fn pick_files<F:FnOnce(Option<Vec<FilePath>>) + Send + 'static>(
-		self,
-		f:F,
-	) {
+	pub fn pick_files<F:FnOnce(Option<Vec<FilePath>>) + Send + 'static>(self, f:F) {
 		pick_files(self, f)
 	}
 
@@ -542,10 +511,7 @@ impl<R:Runtime> FileDialogBuilder<R> {
 	/// });
 	/// ```
 	#[cfg(desktop)]
-	pub fn pick_folders<F:FnOnce(Option<Vec<FilePath>>) + Send + 'static>(
-		self,
-		f:F,
-	) {
+	pub fn pick_folders<F:FnOnce(Option<Vec<FilePath>>) + Send + 'static>(self, f:F) {
 		pick_folders(self, f)
 	}
 
@@ -567,9 +533,7 @@ impl<R:Runtime> FileDialogBuilder<R> {
 	/// 	Ok(())
 	/// });
 	/// ```
-	pub fn save_file<F:FnOnce(Option<FilePath>) + Send + 'static>(self, f:F) {
-		save_file(self, f)
-	}
+	pub fn save_file<F:FnOnce(Option<FilePath>) + Send + 'static>(self, f:F) { save_file(self, f) }
 }
 
 /// Blocking APIs.
@@ -589,9 +553,7 @@ impl<R:Runtime> FileDialogBuilder<R> {
 	/// 	// the file path is `None` if the user closed the dialog
 	/// }
 	/// ```
-	pub fn blocking_pick_file(self) -> Option<FilePath> {
-		blocking_fn!(self, pick_file)
-	}
+	pub fn blocking_pick_file(self) -> Option<FilePath> { blocking_fn!(self, pick_file) }
 
 	/// Shows the dialog to select multiple files.
 	/// This is a blocking operation,
@@ -608,9 +570,7 @@ impl<R:Runtime> FileDialogBuilder<R> {
 	/// 	// the file paths value is `None` if the user closed the dialog
 	/// }
 	/// ```
-	pub fn blocking_pick_files(self) -> Option<Vec<FilePath>> {
-		blocking_fn!(self, pick_files)
-	}
+	pub fn blocking_pick_files(self) -> Option<Vec<FilePath>> { blocking_fn!(self, pick_files) }
 
 	/// Shows the dialog to select a single folder.
 	/// This is a blocking operation,
@@ -628,9 +588,7 @@ impl<R:Runtime> FileDialogBuilder<R> {
 	/// }
 	/// ```
 	#[cfg(desktop)]
-	pub fn blocking_pick_folder(self) -> Option<FilePath> {
-		blocking_fn!(self, pick_folder)
-	}
+	pub fn blocking_pick_folder(self) -> Option<FilePath> { blocking_fn!(self, pick_folder) }
 
 	/// Shows the dialog to select multiple folders.
 	/// This is a blocking operation,
@@ -648,9 +606,7 @@ impl<R:Runtime> FileDialogBuilder<R> {
 	/// }
 	/// ```
 	#[cfg(desktop)]
-	pub fn blocking_pick_folders(self) -> Option<Vec<FilePath>> {
-		blocking_fn!(self, pick_folders)
-	}
+	pub fn blocking_pick_folders(self) -> Option<Vec<FilePath>> { blocking_fn!(self, pick_folders) }
 
 	/// Shows the dialog to save a file.
 	/// This is a blocking operation,
@@ -667,7 +623,5 @@ impl<R:Runtime> FileDialogBuilder<R> {
 	/// 	// the file path is `None` if the user closed the dialog
 	/// }
 	/// ```
-	pub fn blocking_save_file(self) -> Option<FilePath> {
-		blocking_fn!(self, save_file)
-	}
+	pub fn blocking_save_file(self) -> Option<FilePath> { blocking_fn!(self, save_file) }
 }

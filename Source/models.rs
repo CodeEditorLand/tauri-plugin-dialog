@@ -35,10 +35,7 @@ impl<'de> Deserialize<'de> for MessageDialogKind {
 }
 
 impl Serialize for MessageDialogKind {
-	fn serialize<S>(
-		&self,
-		serializer:S,
-	) -> std::result::Result<S::Ok, S::Error>
+	fn serialize<S>(&self, serializer:S) -> std::result::Result<S::Ok, S::Error>
 	where
 		S: Serializer, {
 		match self {

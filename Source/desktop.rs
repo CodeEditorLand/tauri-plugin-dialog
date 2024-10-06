@@ -9,12 +9,7 @@
 //! dialogs from the main thread. When using on asynchronous contexts such as
 //! async commands, the [`blocking`] APIs are recommended.
 
-use raw_window_handle::{
-	HasDisplayHandle,
-	HasWindowHandle,
-	RawDisplayHandle,
-	RawWindowHandle,
-};
+use raw_window_handle::{HasDisplayHandle, HasWindowHandle, RawDisplayHandle, RawWindowHandle};
 use rfd::{AsyncFileDialog, AsyncMessageDialog};
 use serde::de::DeserializeOwned;
 use tauri::{plugin::PluginApi, AppHandle, Runtime};
@@ -57,10 +52,7 @@ pub(crate) struct WindowHandle {
 }
 
 impl WindowHandle {
-	pub(crate) fn new(
-		window_handle:RawWindowHandle,
-		display_handle:RawDisplayHandle,
-	) -> Self {
+	pub(crate) fn new(window_handle:RawWindowHandle, display_handle:RawDisplayHandle) -> Self {
 		Self { window_handle, display_handle }
 	}
 }
@@ -68,26 +60,16 @@ impl WindowHandle {
 impl HasWindowHandle for WindowHandle {
 	fn window_handle(
 		&self,
-	) -> Result<
-		raw_window_handle::WindowHandle<'_>,
-		raw_window_handle::HandleError,
-	> {
-		Ok(unsafe {
-			raw_window_handle::WindowHandle::borrow_raw(self.window_handle)
-		})
+	) -> Result<raw_window_handle::WindowHandle<'_>, raw_window_handle::HandleError> {
+		Ok(unsafe { raw_window_handle::WindowHandle::borrow_raw(self.window_handle) })
 	}
 }
 
 impl HasDisplayHandle for WindowHandle {
 	fn display_handle(
 		&self,
-	) -> Result<
-		raw_window_handle::DisplayHandle<'_>,
-		raw_window_handle::HandleError,
-	> {
-		Ok(unsafe {
-			raw_window_handle::DisplayHandle::borrow_raw(self.display_handle)
-		})
+	) -> Result<raw_window_handle::DisplayHandle<'_>, raw_window_handle::HandleError> {
+		Ok(unsafe { raw_window_handle::DisplayHandle::borrow_raw(self.display_handle) })
 	}
 }
 
@@ -113,9 +95,7 @@ impl<R:Runtime> From<FileDialogBuilder<R>> for AsyncFileDialog {
 			builder = builder.set_parent(&parent);
 		}
 
-		builder = builder.set_can_create_directories(
-			d.can_create_directories.unwrap_or(true),
-		);
+		builder = builder.set_can_create_directories(d.can_create_directories.unwrap_or(true));
 
 		builder
 	}
@@ -127,9 +107,7 @@ impl From<MessageDialogButtons> for rfd::MessageButtons {
 			MessageDialogButtons::Ok => Self::Ok,
 			MessageDialogButtons::OkCancel => Self::OkCancel,
 			MessageDialogButtons::OkCustom(ok) => Self::OkCustom(ok),
-			MessageDialogButtons::OkCancelCustom(ok, cancel) => {
-				Self::OkCancelCustom(ok, cancel)
-			},
+			MessageDialogButtons::OkCancelCustom(ok, cancel) => Self::OkCancelCustom(ok, cancel),
 		}
 	}
 }
@@ -154,9 +132,7 @@ pub fn pick_file<R:Runtime, F:FnOnce(Option<FilePath>) + Send + 'static>(
 	dialog:FileDialogBuilder<R>,
 	f:F,
 ) {
-	let f = |path:Option<rfd::FileHandle>| {
-		f(path.map(|p| p.path().to_path_buf().into()))
-	};
+	let f = |path:Option<rfd::FileHandle>| f(path.map(|p| p.path().to_path_buf().into()));
 	let handle = dialog.dialog.app_handle().to_owned();
 	let _ = handle.run_on_main_thread(move || {
 		let dialog = AsyncFileDialog::from(dialog).pick_file();
@@ -164,17 +140,12 @@ pub fn pick_file<R:Runtime, F:FnOnce(Option<FilePath>) + Send + 'static>(
 	});
 }
 
-pub fn pick_files<
-	R:Runtime,
-	F:FnOnce(Option<Vec<FilePath>>) + Send + 'static,
->(
+pub fn pick_files<R:Runtime, F:FnOnce(Option<Vec<FilePath>>) + Send + 'static>(
 	dialog:FileDialogBuilder<R>,
 	f:F,
 ) {
 	let f = |paths:Option<Vec<rfd::FileHandle>>| {
-		f(paths.map(|list| {
-			list.into_iter().map(|p| p.path().to_path_buf().into()).collect()
-		}))
+		f(paths.map(|list| list.into_iter().map(|p| p.path().to_path_buf().into()).collect()))
 	};
 	let handle = dialog.dialog.app_handle().to_owned();
 	let _ = handle.run_on_main_thread(move || {
@@ -187,9 +158,7 @@ pub fn pick_folder<R:Runtime, F:FnOnce(Option<FilePath>) + Send + 'static>(
 	dialog:FileDialogBuilder<R>,
 	f:F,
 ) {
-	let f = |path:Option<rfd::FileHandle>| {
-		f(path.map(|p| p.path().to_path_buf().into()))
-	};
+	let f = |path:Option<rfd::FileHandle>| f(path.map(|p| p.path().to_path_buf().into()));
 	let handle = dialog.dialog.app_handle().to_owned();
 	let _ = handle.run_on_main_thread(move || {
 		let dialog = AsyncFileDialog::from(dialog).pick_folder();
@@ -197,17 +166,12 @@ pub fn pick_folder<R:Runtime, F:FnOnce(Option<FilePath>) + Send + 'static>(
 	});
 }
 
-pub fn pick_folders<
-	R:Runtime,
-	F:FnOnce(Option<Vec<FilePath>>) + Send + 'static,
->(
+pub fn pick_folders<R:Runtime, F:FnOnce(Option<Vec<FilePath>>) + Send + 'static>(
 	dialog:FileDialogBuilder<R>,
 	f:F,
 ) {
 	let f = |paths:Option<Vec<rfd::FileHandle>>| {
-		f(paths.map(|list| {
-			list.into_iter().map(|p| p.path().to_path_buf().into()).collect()
-		}))
+		f(paths.map(|list| list.into_iter().map(|p| p.path().to_path_buf().into()).collect()))
 	};
 	let handle = dialog.dialog.app_handle().to_owned();
 	let _ = handle.run_on_main_thread(move || {
@@ -220,9 +184,7 @@ pub fn save_file<R:Runtime, F:FnOnce(Option<FilePath>) + Send + 'static>(
 	dialog:FileDialogBuilder<R>,
 	f:F,
 ) {
-	let f = |path:Option<rfd::FileHandle>| {
-		f(path.map(|p| p.path().to_path_buf().into()))
-	};
+	let f = |path:Option<rfd::FileHandle>| f(path.map(|p| p.path().to_path_buf().into()));
 	let handle = dialog.dialog.app_handle().to_owned();
 	let _ = handle.run_on_main_thread(move || {
 		let dialog = AsyncFileDialog::from(dialog).save_file();
@@ -245,9 +207,7 @@ pub fn show_message_dialog<R:Runtime, F:FnOnce(bool) + Send + 'static>(
 	let f = move |res| {
 		f(match res {
 			MessageDialogResult::Ok | MessageDialogResult::Yes => true,
-			MessageDialogResult::Custom(s) => {
-				ok_label.map_or(s == OK, |ok_label| ok_label == s)
-			},
+			MessageDialogResult::Custom(s) => ok_label.map_or(s == OK, |ok_label| ok_label == s),
 			_ => false,
 		});
 	};

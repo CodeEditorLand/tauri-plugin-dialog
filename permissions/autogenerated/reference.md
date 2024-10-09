@@ -1,17 +1,20 @@
 ## Default Permission
 
-This permission set configures the types of dialogs available from the dialog
-plugin.
+This permission set configures the types of dialogs
+available from the dialog plugin.
 
 #### Granted Permissions
 
 All dialog types are enabled.
 
--   `allow-ask`
--   `allow-confirm`
--   `allow-message`
--   `allow-save`
--   `allow-open`
+
+
+
+- `allow-ask`
+- `allow-confirm`
+- `allow-message`
+- `allow-save`
+- `allow-open`
 
 ## Permission Table
 
@@ -20,6 +23,7 @@ All dialog types are enabled.
 <th>Identifier</th>
 <th>Description</th>
 </tr>
+
 
 <tr>
 <td>

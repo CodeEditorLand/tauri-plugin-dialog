@@ -1,29 +1,25 @@
 {
-	"name": "@tauri-apps/plugin-dialog",
-	"version": "2.0.0",
-	"repository": "https://github.com/tauri-apps/plugins-workspace",
-	"license": "MIT OR Apache-2.0",
-	"type": "module",
-	"exports": {
-		"types": "./dist-js/index.d.ts",
-		"import": "./dist-js/index.js",
-		"require": "./dist-js/index.cjs"
+	"authors": [
+		"Tauri Programme within The Commons Conservancy"
+	],
+	"dependencies": {
+		"@tauri-apps/api": "^2.0.2"
 	},
-	"main": "./dist-js/index.cjs",
-	"module": "./dist-js/index.js",
-	"types": "./dist-js/index.d.ts",
+	"exports": {
+		"import": "./dist-js/index.js",
+		"require": "./dist-js/index.cjs",
+		"types": "./dist-js/index.d.ts"
+	},
 	"files": [
 		"dist-js",
 		"README.md",
 		"LICENSE"
 	],
+	"main": "./dist-js/index.cjs",
+	"module": "./dist-js/index.js",
+	"name": "@tauri-apps/plugin-dialog",
 	"scripts": {
 		"build": "rollup -c"
 	},
-	"dependencies": {
-		"@tauri-apps/api": "^2.0.2"
-	},
-	"authors": [
-		"Tauri Programme within The Commons Conservancy"
-	]
+	"types": "./dist-js/index.d.ts"
 }

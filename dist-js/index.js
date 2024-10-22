@@ -134,14 +134,14 @@ async function message(message, options) {
  * @since 2.0.0
  */
 async function ask(message, options) {
-	const opts = typeof options === "string" ? { title: options } : options;
-	return await invoke("plugin:dialog|ask", {
-		message: message.toString(),
-		title: opts?.title?.toString(),
-		kind: opts?.kind,
-		okButtonLabel: opts?.okLabel?.toString() ?? "Yes",
-		cancelButtonLabel: opts?.cancelLabel?.toString() ?? "No",
-	});
+    const opts = typeof options === 'string' ? { title: options } : options;
+    return await invoke('plugin:dialog|ask', {
+        message: message.toString(),
+        title: opts?.title?.toString(),
+        kind: opts?.kind,
+        yesButtonLabel: opts?.okLabel?.toString(),
+        noButtonLabel: opts?.cancelLabel?.toString()
+    });
 }
 /**
  * Shows a question dialog with `Ok` and `Cancel` buttons.
@@ -160,14 +160,14 @@ async function ask(message, options) {
  * @since 2.0.0
  */
 async function confirm(message, options) {
-	const opts = typeof options === "string" ? { title: options } : options;
-	return await invoke("plugin:dialog|confirm", {
-		message: message.toString(),
-		title: opts?.title?.toString(),
-		kind: opts?.kind,
-		okButtonLabel: opts?.okLabel?.toString() ?? "Ok",
-		cancelButtonLabel: opts?.cancelLabel?.toString() ?? "Cancel",
-	});
+    const opts = typeof options === 'string' ? { title: options } : options;
+    return await invoke('plugin:dialog|confirm', {
+        message: message.toString(),
+        title: opts?.title?.toString(),
+        kind: opts?.kind,
+        okButtonLabel: opts?.okLabel?.toString(),
+        cancelButtonLabel: opts?.cancelLabel?.toString()
+    });
 }
 
 export { ask, confirm, message, open, save };

@@ -252,14 +252,14 @@ async function ask(
 	message: string,
 	options?: string | ConfirmDialogOptions,
 ): Promise<boolean> {
-  const opts = typeof options === 'string' ? { title: options } : options
-  return await invoke('plugin:dialog|ask', {
-    message: message.toString(),
-    title: opts?.title?.toString(),
-    kind: opts?.kind,
-    yesButtonLabel: opts?.okLabel?.toString(),
-    noButtonLabel: opts?.cancelLabel?.toString()
-  })
+	const opts = typeof options === "string" ? { title: options } : options;
+	return await invoke("plugin:dialog|ask", {
+		message: message.toString(),
+		title: opts?.title?.toString(),
+		kind: opts?.kind,
+		yesButtonLabel: opts?.okLabel?.toString(),
+		noButtonLabel: opts?.cancelLabel?.toString(),
+	});
 }
 
 /**
@@ -282,14 +282,14 @@ async function confirm(
 	message: string,
 	options?: string | ConfirmDialogOptions,
 ): Promise<boolean> {
-  const opts = typeof options === 'string' ? { title: options } : options
-  return await invoke('plugin:dialog|confirm', {
-    message: message.toString(),
-    title: opts?.title?.toString(),
-    kind: opts?.kind,
-    okButtonLabel: opts?.okLabel?.toString(),
-    cancelButtonLabel: opts?.cancelLabel?.toString()
-  })
+	const opts = typeof options === "string" ? { title: options } : options;
+	return await invoke("plugin:dialog|confirm", {
+		message: message.toString(),
+		title: opts?.title?.toString(),
+		kind: opts?.kind,
+		okButtonLabel: opts?.okLabel?.toString(),
+		cancelButtonLabel: opts?.cancelLabel?.toString(),
+	});
 }
 
 export type {

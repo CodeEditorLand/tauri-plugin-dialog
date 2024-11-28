@@ -237,6 +237,7 @@ declare function confirm(
 	message: string,
 	options?: string | ConfirmDialogOptions,
 ): Promise<boolean>;
+
 export type {
 	DialogFilter,
 	OpenDialogOptions,
@@ -245,4 +246,5 @@ export type {
 	MessageDialogOptions,
 	ConfirmDialogOptions,
 };
+
 export { open, save, message, ask, confirm };

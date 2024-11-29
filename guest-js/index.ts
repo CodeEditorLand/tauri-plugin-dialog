@@ -224,6 +224,7 @@ async function message(
 	options?: string | MessageDialogOptions,
 ): Promise<void> {
 	const opts = typeof options === "string" ? { title: options } : options;
+
 	await invoke("plugin:dialog|message", {
 		message: message.toString(),
 		title: opts?.title?.toString(),
@@ -253,6 +254,7 @@ async function ask(
 	options?: string | ConfirmDialogOptions,
 ): Promise<boolean> {
 	const opts = typeof options === "string" ? { title: options } : options;
+
 	return await invoke("plugin:dialog|ask", {
 		message: message.toString(),
 		title: opts?.title?.toString(),
@@ -283,6 +285,7 @@ async function confirm(
 	options?: string | ConfirmDialogOptions,
 ): Promise<boolean> {
 	const opts = typeof options === "string" ? { title: options } : options;
+
 	return await invoke("plugin:dialog|confirm", {
 		message: message.toString(),
 		title: opts?.title?.toString(),

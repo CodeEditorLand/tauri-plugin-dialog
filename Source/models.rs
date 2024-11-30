@@ -28,6 +28,7 @@ impl<'de> Deserialize<'de> for MessageDialogKind {
         D: Deserializer<'de>,
     {
         let s = String::deserialize(deserializer)?;
+
         Ok(match s.to_lowercase().as_str() {
             "info" => MessageDialogKind::Info,
             "warning" => MessageDialogKind::Warning,

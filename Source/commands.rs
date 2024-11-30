@@ -82,6 +82,7 @@ fn set_default_path<R: Runtime>(
     if let Some(file_name) = default_path.file_name() {
         dialog_builder = dialog_builder.set_file_name(file_name.to_string_lossy());
     }
+
     dialog_builder
 }
 
@@ -92,15 +93,18 @@ fn set_default_path<R: Runtime>(
 ) -> FileDialogBuilder<R> {
     // we need to adjust the separator on Windows: https://github.com/tauri-apps/tauri/issues/8074
     let default_path: PathBuf = default_path.components().collect();
+
     if default_path.is_file() || !default_path.exists() {
         if let (Some(parent), Some(file_name)) = (default_path.parent(), default_path.file_name()) {
             if parent.components().count() > 0 {
                 dialog_builder = dialog_builder.set_directory(parent);
             }
+
             dialog_builder = dialog_builder.set_file_name(file_name.to_string_lossy());
         } else {
             dialog_builder = dialog_builder.set_directory(default_path);
         }
+
         dialog_builder
     } else {
         dialog_builder.set_directory(default_path)
@@ -118,17 +122,22 @@ pub(crate) async fn open<R: Runtime>(
     {
         dialog_builder = dialog_builder.set_parent(&window);
     }
+
     if let Some(title) = options.title {
         dialog_builder = dialog_builder.set_title(title);
     }
+
     if let Some(default_path) = options.default_path {
         dialog_builder = set_default_path(dialog_builder, default_path);
     }
+
     if let Some(can) = options.can_create_directories {
         dialog_builder = dialog_builder.set_can_create_directories(can);
     }
+
     for filter in options.filters {
         let extensions: Vec<&str> = filter.extensions.iter().map(|s| &**s).collect();
+
         dialog_builder = dialog_builder.add_filter(filter.name, &extensions);
     }
 
@@ -139,29 +148,35 @@ pub(crate) async fn open<R: Runtime>(
 
             if options.multiple {
                 let folders = dialog_builder.blocking_pick_folders();
+
                 if let Some(folders) = &folders {
                     for folder in folders {
                         if let Ok(path) = folder.clone().into_path() {
                             if let Some(s) = window.try_fs_scope() {
                                 s.allow_directory(&path, options.recursive)?;
                             }
+
                             tauri_scope.allow_directory(&path, options.directory)?;
                         }
                     }
                 }
+
                 OpenResponse::Folders(
                     folders.map(|folders| folders.into_iter().map(|p| p.simplified()).collect()),
                 )
             } else {
                 let folder = dialog_builder.blocking_pick_folder();
+
                 if let Some(folder) = &folder {
                     if let Ok(path) = folder.clone().into_path() {
                         if let Some(s) = window.try_fs_scope() {
                             s.allow_directory(&path, options.recursive)?;
                         }
+
                         tauri_scope.allow_directory(&path, options.directory)?;
                     }
                 }
+
                 OpenResponse::Folder(folder.map(|p| p.simplified()))
             }
         }
@@ -171,6 +186,7 @@ pub(crate) async fn open<R: Runtime>(
         let tauri_scope = window.state::<tauri::scope::Scopes>();
 
         let files = dialog_builder.blocking_pick_files();
+
         if let Some(files) = &files {
             for file in files {
                 if let Ok(path) = file.clone().into_path() {
@@ -182,9 +198,11 @@ pub(crate) async fn open<R: Runtime>(
                 }
             }
         }
+
         OpenResponse::Files(files.map(|files| files.into_iter().map(|f| f.simplified()).collect()))
     } else {
         let tauri_scope = window.state::<tauri::scope::Scopes>();
+
         let file = dialog_builder.blocking_pick_file();
 
         if let Some(file) = &file {
@@ -192,11 +210,14 @@ pub(crate) async fn open<R: Runtime>(
                 if let Some(s) = window.try_fs_scope() {
                     s.allow_file(&path)?;
                 }
+
                 tauri_scope.allow_file(&path)?;
             }
         }
+
         OpenResponse::File(file.map(|f| f.simplified()))
     };
+
     Ok(res)
 }
 
@@ -212,28 +233,35 @@ pub(crate) async fn save<R: Runtime>(
     {
         dialog_builder = dialog_builder.set_parent(&window);
     }
+
     if let Some(title) = options.title {
         dialog_builder = dialog_builder.set_title(title);
     }
+
     if let Some(default_path) = options.default_path {
         dialog_builder = set_default_path(dialog_builder, default_path);
     }
+
     if let Some(can) = options.can_create_directories {
         dialog_builder = dialog_builder.set_can_create_directories(can);
     }
+
     for filter in options.filters {
         let extensions: Vec<&str> = filter.extensions.iter().map(|s| &**s).collect();
+
         dialog_builder = dialog_builder.add_filter(filter.name, &extensions);
     }
 
     let tauri_scope = window.state::<tauri::scope::Scopes>();
 
     let path = dialog_builder.blocking_save_file();
+
     if let Some(p) = &path {
         if let Ok(path) = p.clone().into_path() {
             if let Some(s) = window.try_fs_scope() {
                 s.allow_file(&path)?;
             }
+
             tauri_scope.allow_file(&path)?;
         }
     }

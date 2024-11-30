@@ -47,10 +47,12 @@ pub(crate) const NO: &str = "No";
 macro_rules! blocking_fn {
     ($self:ident, $fn:ident) => {{
         let (tx, rx) = sync_channel(0);
+
         let cb = move |response| {
             tx.send(response).unwrap();
         };
         $self.$fn(cb);
+
         rx.recv().unwrap()
     }};
 }
@@ -184,7 +186,9 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
             let dialog = mobile::init(app, api)?;
             #[cfg(desktop)]
             let dialog = desktop::init(app, api)?;
+
             app.manage(dialog);
+
             Ok(())
         })
         .build()
@@ -242,6 +246,7 @@ impl<R: Runtime> MessageDialogBuilder<R> {
                 (Some(ok.as_str()), Some(cancel.as_str()))
             }
         };
+
         MessageDialogPayload {
             title: &self.title,
             message: &self.message,
@@ -254,6 +259,7 @@ impl<R: Runtime> MessageDialogBuilder<R> {
     /// Sets the dialog title.
     pub fn title(mut self, title: impl Into<String>) -> Self {
         self.title = title.into();
+
         self
     }
 
@@ -271,12 +277,14 @@ impl<R: Runtime> MessageDialogBuilder<R> {
                 display_handle.as_raw(),
             ));
         }
+
         self
     }
 
     /// Sets the dialog buttons.
     pub fn buttons(mut self, buttons: MessageDialogButtons) -> Self {
         self.buttons = buttons;
+
         self
     }
 
@@ -286,6 +294,7 @@ impl<R: Runtime> MessageDialogBuilder<R> {
     /// the will inform user it message is a error, warning or just information.
     pub fn kind(mut self, kind: MessageDialogKind) -> Self {
         self.kind = kind;
+
         self
     }
 
@@ -366,6 +375,7 @@ impl<R: Runtime> FileDialogBuilder<R> {
             name: name.into(),
             extensions: extensions.iter().map(|e| e.to_string()).collect(),
         });
+
         self
     }
 
@@ -373,6 +383,7 @@ impl<R: Runtime> FileDialogBuilder<R> {
     #[must_use]
     pub fn set_directory<P: AsRef<Path>>(mut self, directory: P) -> Self {
         self.starting_directory.replace(directory.as_ref().into());
+
         self
     }
 
@@ -380,6 +391,7 @@ impl<R: Runtime> FileDialogBuilder<R> {
     #[must_use]
     pub fn set_file_name(mut self, file_name: impl Into<String>) -> Self {
         self.file_name.replace(file_name.into());
+
         self
     }
 
@@ -400,6 +412,7 @@ impl<R: Runtime> FileDialogBuilder<R> {
                 display_handle.as_raw(),
             ));
         }
+
         self
     }
 
@@ -407,12 +420,14 @@ impl<R: Runtime> FileDialogBuilder<R> {
     #[must_use]
     pub fn set_title(mut self, title: impl Into<String>) -> Self {
         self.title.replace(title.into());
+
         self
     }
 
     /// Set whether it should be possible to create new directories in the dialog. Enabled by default. **macOS only**.
     pub fn set_can_create_directories(mut self, can: bool) -> Self {
         self.can_create_directories.replace(can);
+
         self
     }
 

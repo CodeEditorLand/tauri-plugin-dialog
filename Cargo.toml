@@ -1,48 +1,63 @@
+[build-dependencies]
+tauri-plugin = { workspace = true, features = ["build"] }
+
+[dependencies]
+log = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tauri = { workspace = true }
+tauri-plugin-fs = { path = "../fs", version = "2.2.0" }
+thiserror = { workspace = true }
+url = { workspace = true }
+
+[dev-dependencies]
+tauri = { workspace = true, features = ["wry"] }
+
+[lib]
+path = "Source/lib.rs"
+
 [package]
-name = "tauri-plugin-dialog"
-version = "2.2.0"
+authors = { workspace = true }
 description = "Native system dialogs for opening and saving files along with message dialogs on your Tauri application."
 edition = { workspace = true }
-authors = { workspace = true }
-license = { workspace = true }
-rust-version = { workspace = true }
-repository = { workspace = true }
+license-file = { workspace = true }
 links = "tauri-plugin-dialog"
+name = "tauri-plugin-dialog"
+repository = { workspace = true }
+rust-version = { workspace = true }
+version = "2.2.0"
+
+[package.metadata]
+
+[package.metadata.docs]
 
 [package.metadata.docs.rs]
 rustc-args = ["--cfg", "docsrs"]
 rustdoc-args = ["--cfg", "docsrs"]
 targets = ["x86_64-unknown-linux-gnu", "x86_64-linux-android"]
 
+[package.metadata.platforms]
+
 [package.metadata.platforms.support]
-windows = { level = "full", notes = "" }
-linux = { level = "full", notes = "" }
-macos = { level = "full", notes = "" }
 android = { level = "partial", notes = "Does not support folder picker" }
 ios = { level = "partial", notes = "Does not support folder picker" }
+linux = { level = "full", notes = "" }
+macos = { level = "full", notes = "" }
+windows = { level = "full", notes = "" }
 
-[build-dependencies]
-tauri-plugin = { workspace = true, features = ["build"] }
+[target]
 
-[dev-dependencies]
-tauri = { workspace = true, features = ["wry"] }
+[target.'cfg(any(target_os = "macos", windows, target_os = "linux", target_os = "dragonfly", target_os = "freebsd", target_os = "openbsd", target_os = "netbsd"))']
 
-[dependencies]
-serde = { workspace = true }
-serde_json = { workspace = true }
-tauri = { workspace = true }
-log = { workspace = true }
-thiserror = { workspace = true }
-url = { workspace = true }
-tauri-plugin-fs = { path = "../fs", version = "2.2.0" }
-
-[target.'cfg(target_os = "ios")'.dependencies]
-tauri = { workspace = true, features = ["wry"] }
-
-[target."cfg(any(target_os = \"macos\", windows, target_os = \"linux\", target_os = \"dragonfly\", target_os = \"freebsd\", target_os = \"openbsd\", target_os = \"netbsd\"))".dependencies]
+[target.'cfg(any(target_os = "macos", windows, target_os = "linux", target_os = "dragonfly", target_os = "freebsd", target_os = "openbsd", target_os = "netbsd"))'.dependencies]
+raw-window-handle = "0.6"
 rfd = { version = "0.15", default-features = false, features = [
   "tokio",
   "gtk3",
   "common-controls-v6",
 ] }
-raw-window-handle = "0.6"
+
+[target.'cfg(target_os = "ios")']
+
+[target.'cfg(target_os = "ios")'.dependencies]
+tauri = { workspace = true, features = ["wry"] }

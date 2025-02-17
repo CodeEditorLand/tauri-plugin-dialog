@@ -1,17 +1,20 @@
 ## Default Permission
 
-This permission set configures the types of dialogs available from the dialog
-plugin.
+This permission set configures the types of dialogs
+available from the dialog plugin.
 
 #### Granted Permissions
 
 All dialog types are enabled.
 
--   `allow-ask`
--   `allow-confirm`
--   `allow-message`
--   `allow-save`
--   `allow-open`
+
+
+
+- `allow-ask`
+- `allow-confirm`
+- `allow-message`
+- `allow-save`
+- `allow-open`
 
 ## Permission Table
 
@@ -21,10 +24,11 @@ All dialog types are enabled.
 <th>Description</th>
 </tr>
 
+
 <tr>
 <td>
 
-`dialog:allow-ask`
+`dialog-read-only:allow-ask`
 
 </td>
 <td>
@@ -37,7 +41,7 @@ Enables the ask command without any pre-configured scope.
 <tr>
 <td>
 
-`dialog:deny-ask`
+`dialog-read-only:deny-ask`
 
 </td>
 <td>
@@ -50,7 +54,7 @@ Denies the ask command without any pre-configured scope.
 <tr>
 <td>
 
-`dialog:allow-confirm`
+`dialog-read-only:allow-confirm`
 
 </td>
 <td>
@@ -63,7 +67,7 @@ Enables the confirm command without any pre-configured scope.
 <tr>
 <td>
 
-`dialog:deny-confirm`
+`dialog-read-only:deny-confirm`
 
 </td>
 <td>
@@ -76,7 +80,7 @@ Denies the confirm command without any pre-configured scope.
 <tr>
 <td>
 
-`dialog:allow-message`
+`dialog-read-only:allow-message`
 
 </td>
 <td>
@@ -89,7 +93,7 @@ Enables the message command without any pre-configured scope.
 <tr>
 <td>
 
-`dialog:deny-message`
+`dialog-read-only:deny-message`
 
 </td>
 <td>
@@ -102,7 +106,7 @@ Denies the message command without any pre-configured scope.
 <tr>
 <td>
 
-`dialog:allow-open`
+`dialog-read-only:allow-open`
 
 </td>
 <td>
@@ -115,7 +119,7 @@ Enables the open command without any pre-configured scope.
 <tr>
 <td>
 
-`dialog:deny-open`
+`dialog-read-only:deny-open`
 
 </td>
 <td>
@@ -128,7 +132,7 @@ Denies the open command without any pre-configured scope.
 <tr>
 <td>
 
-`dialog:allow-save`
+`dialog-read-only:allow-save`
 
 </td>
 <td>
@@ -141,7 +145,7 @@ Enables the save command without any pre-configured scope.
 <tr>
 <td>
 
-`dialog:deny-save`
+`dialog-read-only:deny-save`
 
 </td>
 <td>
